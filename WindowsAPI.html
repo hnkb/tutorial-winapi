@@ -1,0 +1,694 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>برنامه‌نویسی ویندوز</title>
+    <style>
+        body {
+            margin: 2em;
+            font: 20px 'Arabic Typesetting';
+        }
+
+        article > section {
+            margin: 4em 0;
+        }
+
+        article > section > section {
+            margin: 2em;
+        }
+
+        aside {
+            border: 2px dashed #000;
+            padding: .5em;
+            margin: 2em;
+            background: #fffbe8;
+        }
+
+        label {
+            font-size: 16px;
+            color: #0094ff;
+            display: block;
+            text-align: center;
+        }
+
+        span.ltr {
+            display: inline-block;
+            direction: ltr;
+        }
+
+        .image {
+            text-align: center;
+        }
+
+        pre {
+            direction: ltr;
+            background: #fffbe8;
+            font: 12px 'Consolas', 'Courier';
+            padding: 1em;
+        }
+            pre b {
+                color: #0094ff;
+            }
+
+        code {
+            direction: ltr;
+            display: inline-block;
+            background: #fffbe8;
+            font: 12px 'Consolas', 'Courier';
+            padding: 2px;
+        }
+
+        th {
+            font-weight: 400;
+            color: #0094ff;
+        }
+        td, th {
+            padding: 0 .5em;
+        }
+    </style>
+</head>
+
+<body dir="rtl">
+
+    <article>
+        
+
+        <h1>برنامه‌نویسی ویندوز</h1>
+
+
+        <section>
+            
+            <h1>الف: مقدمات</h1>
+
+            <section>
+                <h1>تنظیمات پروژه</h1>
+                <p>موقع ساختن یک پروژه‌ی جدید، چه Win32 Project را انتخاب کنیم چه Win32 Console Application را، به این پنجره می‌رسیم:</p>
+                <p class="image"><img src="images/new-project-wizard.png" /><label>شکل ۱: ساختن پروژه‌ی جدید</label></p>
+                <p>انتخاب هر کدام از این گزینه‌ها باعث می‌شود که تنظیمات پروژه‌ی جدید تغییرات کوچکی بکند. این تنظیمات به راحتی در Project Properties قابل انجام هستند و کمی پایین‌تر توضیح می‌دهم که انتخاب هر کدام از اینها چه تأثیری در تنظیمات پروژه می‌گذارد.</p>
+                <p>اگر گزینه‌ی Empty project انتخاب شود، ویژوال استودیو هیچ فایلی به پروژه اضافه نمی‌کند. در صورتی که انتخاب نشود تعدادی فایل مثال که تابع main و راه‌اندازی ساده را انجام می‌دهند ساخته می‌شود. ما برای شروع این گزینه را انتخاب می‌کنیم و بعد فایل‌ها و توابع را خودمان یکی یکی اضافه می‌کنیم. پس فعلاً گزینه‌ها را شبیه بالا انتخاب کن و پروژه‌ی جدید را بساز.</p>
+                <p>پروژه‌ی ساخته‌شده خالی است و هیچ فایلی در آن نیست:</p>
+                <p class="image"><img src="images/solution-explorer-empty.png" /><label>شکل ۲: پروژه‌ی خالی</label></p>
+                <p>اگر روی پروژه دکمه‌ی راست را بزنیم و Properties را انتخاب کنیم، پنجره‌ی تنظیمات پروژه باز می‌شود. در قسمت General می‌توانیم نوع پروژه را انتخاب کنیم:</p>
+                <p class="image"><img src="images/properties-general.png" /><label>شکل ۳: صفحه‌ی General در تنظیمات پروژه</label></p>
+                <p>در صورتی که Configuration type را Application (.exe) انتخاب کنیم، خروجی کامپایل یک فایل اجرایی (exe) است. انتخاب گزینه‌های Windows application و Console application در موقع ساختن پروژه (شکل ۱) به این انتخاب منجر می‌شود. انتخاب گزینه‌های دیگر در ساختن پروژه (DLL و Static library در شکل ۱) باعث انتخاب Dynamic library (.dll) و Static library (.lib) می‌شود. پروژه‌های library دارای تابع <code>main</code> نیستند (خودشان به تنهایی قابل اجرا نیستند) بلکه یک مجموعه تابع/کلاس هستند که می‌شود در سایر پروژه‌ها از آنها استفاده کرد.</p>
+                <p>اگر صفحه‌ی Linker/System در تنظیمات پروژه را باز کنیم، با تنظیم گزینه‌ی SubSystem می‌توانیم انتخاب کنیم که نوع فایل اجرایی Console application باشد و یا Windows application:</p>
+                <p class="image"><img src="images/properties-linker-system.png" /><label>شکل ۴: صفحه‌ی Linker/System در تنظیمات پروژه</label></p>
+                <p>در صورتی که SubSystem روی Windows تنظیم شود، باید کد برنامه شامل تابع <code>WinMain</code> باشد و موقع اجرای برنامه این تابع توسط سیستم فراخوانی می‌شود. در صورتی که Console انتخاب شود، برنامه باید شامل تابع <code>main</code> باشد و موقع اجرای برنامه این تابع توسط سیستم فراخوانی می‌شود. ضمناً پروژه‌های Console پنجره‌ی کنسول را که امکان نمایش و دریافت متن  (از طریق <code>std::cin</code>/<code>std::cout</code> یا <code>printf</code>/<code>scanf</code> و ...) را دارد را هم نمایش می‌دهند. گزینه‌های دیگر SubSystem برای درایورها و سایر برنامه‌های سیستمی استفاده می‌شود.</p>
+                <p>فراموش نشود که پارامترهای تابع <code>WinMain</code> با تابع <code>main</code> فرق دارد. تابع <code>main</code> را معمولاً به صورت زیر تعریف می‌کنند:</p>
+<pre>
+int main(int argc, char **argv)
+{
+    return 0;
+}
+</pre>
+                <p>در حالی که تابع <code>WinMain</code> به صورت زیر تعریف می‌شود:</p>
+                <pre>
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
+{
+    return 0;
+}
+</pre>
+                <p>در مورد هر دو تابع، اگر مقداری که تابع برمی‌گرداند 0 باشد یعنی برنامه بدون خطا اجرا شده، مقدار غیر صفر به معنی این است که اجرای برنامه با خطا روبرو شده.</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>Precompiled headers</h1>
+                <p>یکی از تنظیمات پروژه امکان استفاده از precompiled header را فراهم می‌کند. اگر موقع ساختن پروژه (شکل ۱) گزینه‌ی Empty project انتخاب نشده باشد، یک precompiled header به صورت اتوماتیک به پروژه اضافه می‌شود و اگر پروژه خالی ساخته شود این header اضافه نمی‌شود.</p>
+                <p>معمولاً کامپایل کردن فایل‌های header خیلی بزرگ (مثل فایل‌های header مربوط به ویندوز) خیلی زمان‌گیر است. اگر پروژه‌ی ما شامل چندین فایل کد (cpp) باشد، هر کدام از این فایل‌های cpp به صورت جداگانه کامپایل می‌شوند و بعداً همگی با هم link می‌شوند. موقع کامپایل هر کدام از این فایل‌ها، باید کل headerهایی که در آن فایل include شده دوباره کامپایل شوند. به این ترتیب بیشتر زمان کامپایل برنامه به کامپایل این headerهای ثابت طلف می‌شود. در پروژه‌های کوچک زمان کامپایل چندان طولانی نیست ولی در پروژه‌های بزرگ ممکن است کامپایل حتی ساعت‌ها هم طول بکشد، در این شرایط برای بالا بردن سرعت کامپایل از precompiled header  استفاده می‌شود. این header یک فایل هدر (با پسوند h) است که خود ما آن را می‌نویسیم و تمام headerهایی که کامپایل آنها زمان‌گیر است را در آن include می‌کنیم. بعداً در بالای فایل‌های کد این هدر ثابت را قبل از همه include می‌کنیم، به این ترتیب کامپایلر این هدر را یک بار کامپایل می‌کند و موقع کامپایل فایل‌های کد، با فرض کامپایل این header کامپایل را ادامه می‌دهد. اگر همه‌ی headerهای بزرگ که به ندرت در پروژه عوض می‌شوند در این فایل include شوند، زمان کامپایل به شدت کاهش پیدا می‌کند.</p>
+                <p>...</p>
+            </section>
+
+            <section>
+                <h1>Includeکردن headerهای ویندوز</h1>
+                <p>header اصلی ویندوز نامش <code>Windows.h</code> است. با include کردن این header خیلی از امکانات ویندوز (مثل توابع مربوط به مدیریت فایل، thread، ساختن پنجره، گرافیک، ...) include می‌شوند. البته امکانات دیگری در ویندوز هستند (مثل DirectX، سوکت‌ها، XML parser، امکانات گرافیکی پیشرفته‌تر GDI+، اینترنت اکسپلورر و shell) که در داخل <code>Windows.h</code> صدا زده نمی‌شوند و باید در صورتی که برنامه‌ی ما به آنها احتیاج دارد به صورت جداگانه به پروژه include شوند.</p>
+                <aside>
+                    <p>اگر قبل از include کردن <code>Windows.h</code> عبارت <code>#define WIN32_LEAN_AND_MEAN</code> تعریف شده‌باشد، امکاناتی از ویندوز که کمتر استفاده می‌شوند include نمی‌شوند. به این ترتیب، header ویندوز به این شکل include می‌شود:</p>
+<pre>
+#define WIN32_LEAN_AND_MEAN
+#include &lt;Windows.h&gt;
+</pre>
+                    <p>با تعریف WIN32_LEAN_AND_MEAN سرعت کامپایل کمی بیشتر می‌شود ولی در سرعت اجرای برنامه هیچ تأثیری ندارد.</p>
+                </aside>
+                <p>در داخل <code>Windows.h</code> تعداد خیلی زیادی ماکرو وجود دارد. خیلی از این ماکروها برای انواع داده‌ای (typeها) هستند. در استاندارد زبان‌های C و <span class="ltr">C++</span> طول انواع داده صراحتاً مشخص نشده. مثلاً یک کامپایلر 64 بیتی می‌تواند اندازه‌ی <code>int</code> را 32 یا 64 بیت در نظر بگیرد. اندازه‌ی <code>long</code> هم به همین ترتیب است. در حالی که برای ارتباط بین برنامه‌ها باید طول دقیق داده‌ها مشخص شود. اگر یکی از توابع ویندوز انتظار یک عدد صحیح 32 بیتی را داشته‌باشد و برنامه 16 بیت بفرستد، اجرای تابع با خطا مواجه می‌شود. به همین دلیل باید به جای استفاده از typeهای استاندارد C، ماکروهایی تعریف شود که طول داده در آنها مشخص شده و توابع از این ماکروها استفاده کنند. به عنوان مثال انواع زیر در ویندوز با استفاده از ماکرو تعریف شده:</p>
+                <table>
+                    <thead>
+                        <tr><th>اسم ماکرو</th><th>طول</th><th>توضیح</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>BYTE</code></td><td>۸ بیت</td><td>یک بایت (unsigned)</td></tr>
+                        <tr><td><code>WORD</code></td><td>۱۶ بیت</td><td>یک عدد صحیح unsigned با طول 16 بیت</td></tr>
+                        <tr><td><code>DWORD</code></td><td>۳۲ بیت</td><td>یک عدد صحیح unsigned با طول 32 بیت</td></tr>
+                        <tr><td><code>INT</code></td><td>۳۲ بیت</td><td>یک عدد صحیح signed با طول 32 بیت</td></tr>
+                        <tr><td><code>UINT</code></td><td>۳۲ بیت</td><td>یک عدد صحیح unsigned با طول 32 بیت</td></tr>
+                        <tr><td><code>PDWORD</code></td><td>اشاره‌گر</td><td>اشاره‌گر به یک عدد صحیح unsigned با طول 32 بیت</td></tr>
+                        <tr><td><code>LPDWORD</code></td><td>اشاره‌گر</td><td>اشاره‌گر به یک عدد صحیح unsigned با طول 32 بیت</td></tr>
+                        <tr><td><code>CHAR</code></td><td>۸ بیت</td><td>یک کاراکتر 8 بیتی</td></tr>
+                        <tr><td><code>WCHAR</code></td><td>۱۶ بیت</td><td>یک کاراکتر یونی‌کد</td></tr>
+                        <tr><td><code>LPSTR</code></td><td>اشاره‌گر</td><td>رشته‌ی 8-بیتی: اشاره‌گر به یک کاراکتر ۸ بیتی</td></tr>
+                        <tr><td><code>LPWSTR</code></td><td>اشاره‌گر</td><td>رشته‌ی یونی‌کد: اشاره‌گر به یک کاراکتر یونی‌کد (۱۶ بیتی)</td></tr>
+                    </tbody>
+                </table>
+                <p>توضیح:</p>
+                <ul>
+                    <li><p>طول اشاره‌گر در برنامه‌های 32 بیتی 32 بیت و در برنامه‌های 64 بیتی 64 بیت است.</p></li>
+                    <li><p>همان طور که واضح است ماکروهای تکراری زیادی وجود دارد (مثلاً <code>UINT</code> و <code>DWORD</code>) هر دو عدد صحیح 32 بیتی بدون علامت هستند.</p></li>
+                    <li><p>هر جا اسم ماکرو با P یا LP شروع شد به معنی pointer است. LP مخفف long-pointer است، در زمان ویندوز 16 بیتی بین pointer عادی (فقط آفست) و long-pointer (هم سگمنت و هم آفست) فرق وجود داشت ولی در ویندوز 32 بیتی به بعد چنین تفاوتی وجود ندارد، فقط برای حفظ سازگاری با برنامه‌هایی که قدیم نوشته شده‌بوند نام‌های قدیمی حفظ شده‌اند.</p></li>
+                    <li>
+                        <p>برای دیدن لیست طولانی‌تری از انواع  <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa383751(v=vs.85).aspx">اینجا</a> را ببینید. به طور کلی لازم نیست که همه‌ی این انواع را بلد باشید، یا در کد خودتان از آنها استفاده کنید، بلکه موقعی که از یک تابع ویندوز استفاده می‌کنید باید ببینید که چه نوع داده‌ای لازم دارد و مطابق با آن پارامترها را ارسال کنید.</p>
+                        <p>به عنوان مثال، اگر شما از <code>std::wstring</code> برای نگهداری رشته استفاده می‌کنید، ولی برای صدا زدن یک تابع (مثلاً <code>MessageBox</code>) نیاز به تبدیل آن به <code>LPWSTR</code> دارید، چنین کدی استفاده می‌شود:</p>
+<pre>
+std::wstring msg = L"This is my message";
+MessageBox(0, <b>msg.c_str()</b>, 0, 0);
+</pre>
+                    </li>
+                </ul>
+                <p>برای خیلی از مقادیر ثابت هم ماکرو وجود دارد. مثلاً ماکروی <code>NULL</code> معادل مقدار 0 تعریف شده. یا برای مقادیر <code>TRUE</code> و <code>FALSE</code> به ترتیب مقدارهای 1 و 0 تعریف شده. (اگر از نوع داده‌ی <code>bool</code> در زبان C استفاده می‌کنید، از کلمات کلیدی <code>true</code> و <code>false</code> خود زبان استفاده کنید، اگر از ماکروی <code>BOOL</code> ویندوز استفاده می‌کنید از <code>TRUE</code> و <code>FALSE</code> استفاده کنید. ماکروی <code>BOOL</code> از <code>bool</code> استفاده نمی‌کند بلکه یک <code>int</code> 32 بیتی است.) یا مثلاً مقادیر ثابت و flagهای مختلفی برای فرستادن به توابع وجود دارد که برای آن تابع معنی مشخصی دارد.</p>
+                <p>علاوه بر ماکروها، تعداد زیادی تابع هم در ویندوز وجود دارد که در headerها declare شده‌اند (یعنی فقط نوع پارامترها و خروجی تابع مشخص شده). در صورتی که از این توابع در برنامه استفاده شود، برنامه کامپایل می‌شود، ولی برای لینک برنامه، باید مشخص شود که این توابع در کدام فایل اجرایی قرار دارند. اکثر این توابع در DLLهای سیستمی ویندوز که موقع نصب سیستم عامل از روی دیسک نصب به پوشه‌ی <code>WINDOWS\System32</code> کپی می‌شوند قرار دارند. برای مثال تابع <code>MessageBox</code> در فایل <code>user32.dll</code> قرار دارد. برای اینکه بشود پروژه‌ای را که از <code>MessageBox</code> استفاده می‌کند لینک کرد و فایل اجرایی آن را ساخت، باید موقع لینک، فایل <code>user32.lib</code> (که آدرس توابع در <code>user32.dll</code> را در خود دارد) موجود باشد و به لینکر معرفی شود.</p>
+                <p>تعدادی از فایل‌های library پراستفاده (مثل <code>user32.lib</code> که در بالا اشاره شد) موقع ساختن پروژه به صورت اتوماتیک توسط Visual Studio به لینکر معرفی می‌شوند. برای دیدن لیست نام این فایل‌ها یا اضافه‌کردن library‌های دیگر، باید به تنظیمات لینکر مراجعه کرد:</p>
+                <p class="image"><img src="images/properties-linker-input.png" /><label>شکل ۵: تنظیمات فایل‌های ورودی به لینکر</label></p>
+                <p>یک راه دیگر برای معرفی فایل library به لینکر (به جز اضافه کردن در تنظیمات لینکر در شکل ۵) نوشتن یک خط راهنمای لینکر (pragma) به صورت زیر در هر کجای برنامه (مهم نیست کجای برنامه باشد) است:</p>
+<pre>
+#pragma comment(lib, "user32.lib")
+</pre>
+                <p>برای دانستن اینکه هر تابع در چه فایل headerی تعریف شده و برای لینک به آن باید چه فایل library مورد استفاده قرار بگیرد، می‌توانید به مستندات MSDN برای آن تابع مراجعه کنید. به عنوان مثال مستندات مربوط به تابع <code>MessageBox</code> در آدرس <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms645505(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/ms645505(v=vs.85).aspx</a> قرار دارند که در انتهای توضیحات، جدولی با عنوان Requirements آمده که این فایل‌ها را مشخص کرده:</p>
+                <p class="image"><img src="images/msdn-messagebox.png" style="border: 1px solid #0094ff" /><label>شکل ۶: پیدا کردن header و library مربوط به تابع <code>MessageBox</code> در مستندات</label></p>
+                <p>مستندات MSDN برای ویندوز فعلاً در آدرس <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bg126469.aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bg126469.aspx</a> قرار دارند. ضمناً در ویژوال استودیو، با زدن F1 روی نام یک تابع در کد، صفحه‌ی مستندات آن باز می‌شود.</p>
+            </section>
+
+            <section>
+                <h1>نوشتن یک برنامه‌ی ساده</h1>
+                <p>تا حالا یک پروژه‌ی خالی ساخته شده، در ادامه:</p>
+                <ul>
+                    <li><p>در تنظیمات پروژه (شکل ۴)، نوع SubSystem را Windows انتخاب کن.</p></li>
+                    <li><p>از منوی PROJECT گزینه‌ی Add New Item... را انتخاب کن (یا در Solution Explorer روی اسم پروژه دکمه‌ی راست را بزن و بعد گزینه‌ی Add و بعد New Item... را انتخاب کن.)</p></li>
+                    <li>
+                        <p>در لیستی که ظاهر می‌شود <span class="ltr">C++ File (.cpp)</span> را انتخاب کن، اسم فایل را همان <code>Source.cpp</code> بگذار و دکمه‌ی Add را بزن.</p>
+                        <p class="image"><img src="images/add-new-item.png" /><label>شکل ۷: اضافه کردن فایل به پروژه</label></p>
+                        <p>به این ترتیب حالا باید پروژه تنها یک فایل <code>Source.cpp</code> داشته باشد:</p>
+                        <p class="image"><img src="images/solution-explorer-one-file.png" /><label>شکل ۸: پروژه با یک فایل</label></p>
+                    </li>
+                    <li>
+                        <p>در فایل <code>Source.cpp</code> کد زیر را قرار بده:</p>
+<pre>
+#include &lt;windows.h&gt;
+
+int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
+{
+    MessageBox(NULL, L"Hello Windows World!", L"Congratulations", MB_ICONEXCLAMATION);
+    return 0;
+}
+</pre>
+                    </li>
+                    <li><p>برنامه را کامپایل و اجرا کن. پیغام Hello Windows World! در یک دیالوگ نمایش داده می‌شود و بعد از زدن OK برنامه پایان می‌یابد.</p></li>
+                    <li><p>عبارت <code>MB_ICONEXCLAMATION</code> در کد بالا یک ماکرو است که در header ویندوز معادل مقدار ثابتی تعریف شده که به تابع <code>MessageBox</code> می‌گوید آیکان علامت تعجب را در دیالوگ بکشد. به جای آن می‌توانی از flagهای <code>MB_ICONHAND</code> یا <code>MB_ICONQUESTION</code> یا <code>MB_ICONASTERISK</code> استفاده کنی. برای دیدن flagهای قابل استفاده‌ی دیگر صفحه‌ی مستندات تابع <code>MessageBox</code> را در MSDN ببین.</p></li>
+                    <li><p>در تنظیمات پروژه (شکل ۴)، نوع SubSystem را Console انتخاب کن.</p></li>
+                    <li>
+                        <p>در فایل <code>Source.cpp</code> کد زیر را قرار بده:</p>
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+
+int main(int argc, char **argv)
+{
+    printf("A dialog will be displayed now.\n");
+    MessageBox(NULL, L"Hello Windows World!", L"Congratulations", MB_ICONEXCLAMATION);
+    printf("You have clicked OK.\n");
+
+    return 0;
+}
+</pre>
+                    </li>
+                    <li><p>برنامه را کامپایل و اجرا کن. پیغام Hello Windows World! در یک دیالوگ و دو خط متن در کنسول نمایش داده می‌شود و بعد از زدن OK برنامه پایان می‌یابد.</p></li>
+                </ul>
+                <p>می‌توانی نمونه‌ی کدهایی که در ادامه‌ی این فصل می‌آید را در همین تابع <code>main</code> جایگزین کد بالا کرده و اجرا کنی.</p>
+                
+            </section>
+
+            <section>
+                <h1>رشته‌ها و یونی‌کد در ویندوز</h1>
+                <p>در ویندوز، مثل زبان C، رشته‌ها آرایه‌هایی از کاراکترها هستند. انتهای رشته با کاراکتری به مقدار 0 مشخص می‌شود (به چنین رشته‌ای null-terminated string می‌گویند). پس برای نگهداری عبارت Hello به یک buffer به طول حداقل 6 کاراکتر نیاز است و به صورت <code> H  E  L  L  O \0 </code> در حافظه قرار می‌گیرد. </p>
+                <p>برای نگهداری کاراکتر، دو نوع متغیر در ویندوز حمایت می‌شوند. یکی CHAR (که معادل char در زبان C است) و اندازه‌اش 8 بیت است. دیگری WCHAR (مخفف Wide CHARacter که معادل wchar_t در زبان C است) و اندازه‌اش 16 بیت است. توجه که CHAR برای نگهداری کل کاراکترهای موجود در یونی‌کد جای کافی ندارد و فقط WCHAR امکان نگهداری کاراکترهای چندین زبان مختلف را به صورت <a href="http://en.wikipedia.org/wiki/Unicode_in_Microsoft_Windows">یونی‌کد UTF-16</a> دارد. استفاده از CHAR به دلیل عدم حمایت همزمان از چند زبان، مگر برای سازگاری با نرم‌افزارهای قدیمی، توصیه نمی‌شود.</p>
+                <p>برای نگهداری یک رشته، اشاره‌گری به اولین کاراکتر آن در حافظه (<code>CHAR*</code> یا <code>WCHAR*</code> که در ویندوز به ترتیب ماکروهای <code>LPSTR</code> و <code>LPWSTR</code> هم برایشان تعریف شده) استفاده می‌شود. برای تعریف یک string literal (مقدار ثابت رشته)، برای رشته‌های 8 بیتی مقدار رشته بین دو علامت گیومه (مثل <code>"value"</code>) و برای رشته‌های 16 بیتی مقدار رشته به صورت <code>L"value"</code> تایپ می‌شود (حرف L قبل از گیومه اول مشخص‌کننده‌ی رشته با طول 16 بیت برای هر کاراکتر است). در هر دو نمونه‌ی فوق، کاراکتر <code>\0</code> در انتهای رشته توسط کامپایلر C اضافه می‌شود. به مثال‌های زیر توجه کنید:</p>
+<pre>
+char    a = 't';
+wchar_t b = L't';
+WCHAR   c = L't';
+</pre>
+                <p>در مثال بالا، متغیرهای <code>a</code>، <code>b</code> و <code>c</code> همگی حرف t را در خود ذخیره کرده‌اند. متغیر <code>a</code> 8 بیتی و دو تای دیگر (<code>b</code> و <code>c</code>) type یکسانی دارند و هر دو 16 بیتی هستند.</p>
+<pre>
+char *str1 = "Hello";
+LPSTR str2 = "Hello";
+
+CHAR str3[10];
+str3[0] = 'H';
+str3[1] = 'E';
+str3[2] = 'L';
+str3[3] = 'L';
+str3[4] = 'O';
+str3[5] = 0;
+</pre>
+                <p>رشته‌های <code>str1</code>، <code>str2</code> و <code>str3</code> هر سه رشته‌های 8 بیتی هستند که مقدار Hello را در خود ذخیره کرده‌اند. جنس هر سه متغیر دقیقاً یکی است. برای نگهداری <code>str1</code> و <code>str2</code> 6 بایت و <code>str3</code> 10 بایت از حافظه مصرف می‌شود.</p>
+<pre>
+wchar_t *str4 = L"Hello";
+LPWSTR   str5 = L"Hello";
+WCHAR   *str6 = L"Hello";
+
+wchar_t str7[10];
+str7[0] = L'H';
+str7[1] = L'E';
+str7[2] = L'L';
+str7[3] = L'L';
+str7[4] = L'O';
+str7[5] = 0;
+
+WCHAR str8[10] = L"Hello";
+</pre>
+                <p>رشته‌های <code>str4</code>، <code>str5</code>، <code>str6</code>، <code>str7</code> و <code>str8</code> همگی رشته‌های یونی‌کد (16 بیتی) هستند که مقدار Hello را در خود ذخیره کرده‌اند. جنس همه‌ای این متغیرها دقیقاً یکی است. برای نگهداری <code>str4</code>، <code>str5</code> و <code>str6</code> هر کدام 12 بایت و برای نگهداری <code>str7</code> و <code>str8</code> هر کدام 20 بایت از حافظه مصرف می‌شود.</p>
+                <p>&nbsp;</p>
+                <p>بعضی از توابع ویندوز پارامترهایی از جنس string دارند. برای مثال تابع <code>MessageBox</code> که یک پیغام را در یک دیالوگ نمایش می‌دهد، متن پیغام را به صورت رشته دریافت می‌کند. <code>MessageBox</code> و تمام توابع دیگری که پارامتر string دارند، دارای دو نسخه هستند: یکی 8 بیتی (که در انتهای اسمش حرف A اضافه می‌شود) و یکی 16 بیتی (که در انتهای اسمش حرف W اضافه می‌شود). به عنوان مثال، هر دو خط زیر معتبر هستند و کار می‌کنند:</p>
+<pre>
+MessageBoxA(0, "Hello", 0, 0);
+MessageBoxW(0, L"Hello", 0, 0);
+</pre>
+                <p>(مورد توجه که تابع  <code>MessageBoxA</code> نمی‌تواند متنی که هم کلمات فارسی و هم کلمات روسی را دارد نمایش دهد چون امکان ذخیره‌ی چنین متنی در <code>char*</code> وجود ندارد.)</p>
+                <p>به این ترتیب خود <code>MessageBox</code> یک تابع نیست بلکه یک ماکرو است که با توجه به تنظیمات پروژه، یا به صورت <code>MessageBoxA</code> یا <code>MessageBoxW</code> تعریف می‌شود. اگر به فایل header ویندوز که این تابع در آن تعریف شده (<code>WinUser.h</code>) رجوع کنید، چنین تعریفی را می‌بینید:</p>
+<pre>
+int WINAPI MessageBoxA(
+    _In_opt_ HWND hWnd,
+    _In_opt_ LPCSTR lpText,
+    _In_opt_ LPCSTR lpCaption,
+    _In_ UINT uType);
+
+int WINAPI MessageBoxW(
+    _In_opt_ HWND hWnd,
+    _In_opt_ LPCWSTR lpText,
+    _In_opt_ LPCWSTR lpCaption,
+    _In_ UINT uType);
+
+#ifdef UNICODE
+#define MessageBox  MessageBoxW
+#else
+#define MessageBox  MessageBoxA
+#endif // !UNICODE
+</pre>
+                <p>تمام توابع دیگری که مثل <code>MessageBox</code> با رشته کار می‌کنند هم تعریف مشابهی دارند. اگر به تنظیمات پروژه (شکل ۳) نگاه کنید، گزینه‌ای به نام Character Set دارد. اگر مقدار این گزینه Use Unicode Character Set تعریف شود، توابع یونی‌کد (آنها که آخر اسمشان W دارند به صورت پیش‌فرض انتخاب می‌شوند) و در غیر این صورت توابع غیر یونی‌کد (آنها که آخر اسمشان A دارند). برای سازگاری با زبان‌های مختلف، بهتر است از گزینه‌ی یونی‌کد استفاده کنید و حواستان باشد که موقع تعریف رشته از <code>WCHAR</code>، <code>LPWSTR</code> و <code>L""</code> استفاده کنید.</p>
+                <aside>
+                    <p>توجه داشته‌باشید که بدون توجه به تنظیم یونی‌کد پروژه، همیشه می‌توانید از <code>MessageBoxA</code> با رشته‌های 8 بیتی و از <code>MessageBoxW</code> با رشته‌های یونی‌کد استفاده کنید. فقط موقع استفاده از <code>MessageBox</code> است که طول کاراکتر توسط تنظیمات پروژه تعیین می‌شود.</p>
+                    <p>نسخه‌های خیلی قدیمی ویندوز (مثل ویندوز 3.1 و بعضی نسخه‌های ویندوز 95) توابع یونی‌کد را پشتیبانی نمی‌کردند. در آن زمان نیاز بود که برنامه‌ها دو بار کامپایل شوند، یکی نسخه‌ی غیر یونی‌کد که در ویندوز قدیمی پشتیبانی می‌شد و دیگری نسخه‌ی یونی‌کد که همه‌ی زبان‌ها را پشتیبانی می‌کرد ولی در نسخه‌های قدیمی ویندوز قابل اجرا نبود. امروز چنین نیازی وجود ندارد و دلیلی برای استفاده نکردن از یونی‌کد نیست. برای نوشتن کدی که با تغییر تنظیمات یونی‌کد پروژه (یعنی با وجود <code>#define UNICODE</code> یا نبود آن) در هر دو حالت قابل کامپایل باشد، نه تنها باید از ماکروهایی مثل <code>MessageBox</code> استفاده کرد، بلکه باید برای تعریف رشته هم از ماکروهایی استفاده کرد که طول رشته را با توجه به تنظیمات پروژه انتخاب کنند. این ماکروها عبارتند از:</p>
+                    <table>
+                        <thead>
+                            <tr><th>ماکرو</th><th>در حالت 8 بیتی</th><th>در حالت یونی‌کد</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>TCHAR</code></td><td><code>CHAR</code></td><td><code>WCHAR</code></td></tr>
+                            <tr><td><code>LPTSTR</code></td><td><code>LPSTR</code></td><td><code>LPWSTR</code></td></tr>
+                            <tr><td><code>TEXT("xxx")</code></td><td><code>"xxx"</code></td><td><code>L"xxx"</code></td></tr>
+                        </tbody>
+                    </table>
+                    <p>برای مثال، کد زیر فقط با تنظیمات یونی‌کد قابل کامپایل است:</p>
+<pre>
+WCHAR *msg = L"Message";
+MessageBox(0, msg, 0, 0);
+</pre>
+                    <p>کد زیر فقط با تنظیمات 8 بیتی (غیرفعال کردن یونی‌کد) قابل کامپایل است:</p>
+<pre>
+CHAR *msg = "Message";
+MessageBox(0, msg, 0, 0);
+</pre>
+                    <p>کد زیر با هر دو تنظیمات فوق قابل کامپایل است:</p>
+<pre>
+TCHAR *msg = TEXT("Message");
+MessageBox(0, msg, 0, 0);
+</pre>
+                </aside>
+                <p>ویندوز برای بسیاری از توابع کار با رشته که در کتابخانه‌ی استاندارد C وجود دارند، پیاده‌سازی خودش را دارد. این توابع به صورت <code>lstrlen</code>، <code>lstrcpy</code>، <code>lstrcmp</code> و ... هستند (به وجود حرف l در ابتدای اسم توابع دقت کنید). این توابع هم از تنظیمات یونی‌کد پروژه تبعیت می‌کنند و مثل تابع <code>MessageBox</code> دارای دو نسخه هستند (مثلاً <code>lstrlenA</code> و <code>lstrlenW</code>) که هم با یونی‌کد و هم با 8 بیتی کار می‌کنند. بعضی از این توابع امکانات بین‌المللی بیشتری نسبت به مشابه‌های خودشان در کتابخانه‌ی استاندارد C دارند.</p>
+                <p>یکی از بزرگ‌ترین حفره‌های امنیتی در برنامه‌ها، به رشته‌ها و کافی نبودن اندازه‌ی بافر (buffer) رشته‌ها بر می‌گردد. به مثال زیر توجه کنید:</p>
+<pre>
+WCHAR a[10];
+WCHAR b[10];
+
+lstrcpy(a, L"This is a long string");
+</pre>
+                <p>در مثال بالا، از تابع <code>ltrcpy</code> خواسته شده که رشته‌ی <code>L"This is a long string"</code> را در متغیر <code>a</code> کپی کند. ولی متغیر <code>a</code> فقط برای رشته‌ای با طول حداکثر 9 کاراکتر (با احتساب یک کاراکتر که باید برای مشخص شدن پایان رشته <code>\0</code> شود) جا دارد، در حالی که طول <code>L"This is a long string"</code> خیلی بیشتر است. اما تابع <code>lstrcpy</code> که طول آرایه‌ی <code>a</code> را نمی‌داند و کاراکترهای دهم، یازدهم، و ... تا انتهای <code>L"This is a long string"</code> را هم کپی می‌کند. این بایت‌ها احتمالاً در <code>b</code> که در ادامه‌ی حافظه قرار دار کپی می‌شوند و محتوای آن را هم خراب می‌کنند و با توجه به اینکه از انتهای <code>b</code> هم فراتر می‌روند ممکن است جاهای دیگری در استک (stack) را (مثلاً محل قرار گرفتن آدرس برگشت از تابع را) هم خراب کنند. چنین مشکلی در توابع کتابخانه‌ی استاندارد C هم وجود دارند. برای حل چنین مشکلاتی، یک سری توابع جدید کار با رشته‌ها که همگی طول بافر را هم به عنوان ورودی می‌گیرند و از نوشتن خارج از بافر تعیین‌شده پرهیز می‌کنند در فایل headerی به نام <code>StrSafe.h</code> تعریف شده‌اند. برای اطلاع بیشتر به <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff468908(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/ff468908(v=vs.85).aspx</a> مراجعه کنید. برای مثال کد زیر اصلاح‌شده‌ی کد مشکل‌دار بالا با استفاده از این header است:</p>
+<pre>
+WCHAR a[10];
+WCHAR b[10];
+
+StringCchCopy(a, 10, L"This is a long string");
+</pre>
+                <p>&nbsp;</p>
+                <p>ویندوز برای تبدیل رشته‌های 8 بیتی به 16 بیتی تابع <code>MultiByteToWideChar</code> و برای تبدیل رشته‌های 16 بیتی به 8 بیتی تابع <code>WideCharToMultiByte</code> را دارد. از تابع <code>WideCharToMultiByte</code> می‌شود برای تبدیل رشته‌های 16 بیتی به رشته‌های با طول متغیر UTF-8 هم استفاده کرد. به عنوان مثال:</p>
+<pre>
+WCHAR unicode[20] = L"سلام";
+CHAR ansi[100];
+CHAR utf8[100];
+
+WideCharToMultiByte(CP_UTF8, 0, unicode, -1, ansi, 100, NULL, NULL);
+WideCharToMultiByte(1256, 0, unicode, -1, ansi, 100, NULL, NULL);
+MultiByteToWideChar(1256, 0, ansi, -1, unicode, 20);
+</pre>
+                <p>در مثال بالا، 1256 کد کاراکتر ست عربی ویندوز است.</p>
+            </section>
+
+            <section>
+                <h1>ویندوز object-oriented است ولی API آن نه</h1>
+                <p>در داخل ویندوز (هسته و کتابخانه‌ها) تعداد زیادی object تعریف می‌شود، ولی API ویندوز یک رابط غیر object-oriented دارد. برای همین در خیلی جاهای Windows API ما class نداریم و فقط تعدادی تابع وجود دارد. این توابع روی یک سری object کار می‌کنند، ولی دسترسی مستقیم به این objectها برای ما وجود ندارد و این objectها را خود سیستم عامل میسازد و مدیریت میکند. وقتی object را ساخت، یک HANDLE از آن object به ما می‌دهد که در فراخوانی‌های بعدی، برای مشخص کردن اینکه می‌خواهیم عملیات روی کدام object انجام بشود، باید آن HANDLE را هم به تابع مربوطه بدهیم. این HANDLEها یک چیزی شبیه <code>FILE*</code> در کتابخانه‌های زبان C هستند.</p>
+                <p>البته یک روش دسترسی object-oriented به امکانات ویندوز هم بعداً طراحی شد به نام COM که مخفف Component Object Model است ولی اینطور نیست که امکان انتخاب بین این دو API شیء‌گرا و غیرشیءگرا وجود داشته‌باشد؛ API بعضی قسمت‌های (عمدتاً قدیمی‌تر) ویندوز (مثل مدیریت thread، پنجره، فایل، گرافیک و ...) به صورت مجموعه‌ای تابع است (که در صورت نیاز HANDLE اشیاء را رد و بدل می‌کنند) و API بعضی قسمت‌ها(ی عمدتاً جدیدتر) مثل DirectX یا XML parser یا explorer به صورت مجموعه‌ای abstract class. فعلاً کاری به COM نداریم و هر جا لازم شد به سراغش می‌رویم.</p>
+                <p>پس، روش کار ما به این صورت است که ابتدا از ویندوز می‌خواهیم که object مربوطه را بسازد. اگر موفق شد HANDLE مربوط به objectی که ساخته‌شده را برای ما بر می‌گرداند. ما هر کاری خواستیم با آن object انجام می‌دهیم (چون HANDLE مربوطه را داریم) و کارمان هم که تمام شد آن object را پاک می‌کنیم.</p>
+                <p>برای مثال، نوشتن در فایل:</p>
+<pre>
+HANDLE myfile = CreateFile(L"D:\\filename.txt", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+WriteFile(myfile, "Hello", 5, NULL, NULL);
+CloseHandle(myfile);
+</pre>
+                <p>توضیحات:</p>
+                <ul>
+                    <li><p>در خط اول، تابع <code>CreateFile</code> برای ما یک object از نوع فایل می‌سازد و HANDLE آن را بر می‌گرداند که ما این HANDLE را در متغیر <code>myfile</code> ذخیره می‌کنیم (و در تمام فراخوانی‌های بعدی آن را به توابع دیگر می‌فرستیم). باید مشخصات فایلی که می‌سازیم را (اسم فایل، نوع دسترسی که خواندن است یا نوشتن و ...) را برای تابع <code>CreateFile</code> مشخص کنیم.</p></li>
+                    <li><p>در خط دوم می‌خواهیم 5 کاراکتر <code>"Hello"</code> را در فایل بنویسیم. برای این کار باید HANDLE مربوط به فایل را هم به تابع <code>WriteFile</code> بدهیم.</p></li>
+                    <li><p>در خط سوم هم می‌گوییم که کارمان با این object تمام شده و آن را ببندد.</p></li>
+                </ul>
+                <aside>
+                    <p>این مثال یک نقص دارد و آن اینکه وجود خطا را چک نمی‌کند. شاید <code>CreateFile</code> نتواند فایل را بسازد (مثلاً آدرسی که دادیم غلط است یا روی درایو DVD است و امکان نوشتن رویش نیست، یا ...) در این صورت کارهای بعدی هم درست انجام نمی‌شود. در چنین مواردی بهتر است وجود خطا چک شود و به کاربر اطلاع‌رسانی شود. یک چیزی مثل کد زیر:</p>
+<pre>
+HANDLE myfile = CreateFile(L"D:\\filename.txt", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+
+if (myfile == INVALID_HANDLE_VALUE)
+{
+    // tell user there is an error
+}
+else
+{
+    DWORD bytes;
+    WriteFile(myfile, "Hello", 5, &bytes, NULL);
+    if (bytes != 5) /* tell user there was an error */;
+    CloseHandle(myfile);
+}
+</pre>
+                </aside>
+                <p>به عنوان یک مثال دیگر، ساختن دو thread که هر کدام یک تابع جداگانه را همزمان اجرا می‌کنند:</p>
+<pre>
+DWORD   dwThreadIdArray[2];
+HANDLE  hThreadArray[2];
+
+hThreadArray[0] = CreateThread(NULL, 0, Thread1Func, 0, 0, &dwThreadIdArray[0]);
+if (hThreadArray[0] == NULL)
+{
+    printf("Unable to create thread 1");
+    ExitProcess(1);
+}
+
+hThreadArray[1] = CreateThread(NULL, 0, Thread2Func, 0, 0, &dwThreadIdArray[1]);
+if (hThreadArray[1] == NULL)
+{
+    printf("Unable to create thread 2");
+    ExitProcess(2);
+}
+
+WaitForMultipleObjects(2, hThreadArray, TRUE, INFINITE);
+printf("Both threads have finished.");
+
+CloseHandle(hThreadArray[0]);
+CloseHandle(hThreadArray[1]);
+</pre>
+                <p>در مثال‌های بالا (فایل و thread)، HANDLE هر کدام از اشیاء در یک متغیر از جنس <code>HANDLE</code> ذخیره شده. بعضی اشیای دیگر، نوع داده‌ای مخصوص برای HANDLE خود دارند، مثلاً برای نگهداری HANDLE یک پنجره از متغیری با نوع <code>HWND</code> و برای نگهداری HANDLE یک فونت از متغیری با نوع <code>HFONT</code> استفاده می‌شوند. به طور کلی در ویندوز ماکروهایی که اسم آنها با H شروع می‌شود، HANDLE هستند.</p>
+            </section>
+
+            <section>
+                <h1>Calling conventions</h1>
+                <p>ممکن است موقع تعریف توابع با عبارت‌هایی مثل <code>APIENTRY</code>، <code>WINAPI</code> و <code>CALLBACK</code> مواجه شوی. مثلاً تابع WinMain به صورت <code>int APIENTRY WinMain(...) {}</code> تعریف می‌شود. اینها همه ماکروهایی هستند به <code>__stdcall</code>. این نوع فراخوانی تابع، مدل زبان پاسکال است. تقریباً تمام توابع ویندوز از <code>__stdcall</code> استفاده می‌کنند.</p>
+                <p>Calling convention تعیین میکند که ترتیب گذاشتن پارامترها در استک (stack) چطور باشد، مقدار برگردانده شده از تابع در کجا (رجیستر یا استک) قرار بگیرد، وظیفه‌ی خالی کردن استک به عهده‌ی کی باشد (تابع یا کسی که تابع را صدا زده). مدل استاندارد C که <code>__cdecl</code> است طوری طراحی شده بود که بشود تابع <code>printf</code> را با تعداد پارامتر متغیر درست کرد، ولی حجم برنامه را بزرگتر می‌کند. برای اطلاع بیشتر <a href="http://msdn.microsoft.com/en-us/library/984x0h58(v=vs.140).aspx">http://msdn.microsoft.com/en-us/library/984x0h58(v=vs.140).aspx</a> را ببین.</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>از امکانات زبان استفاده کنیم یا Windows API</h1>
+                <p>برای بعضی کارها هم ویندوز تابع دارد و هم زبان برنامه‌نویسی. مثلاً برای دسترسی به فایل هم ویندوز توابع <code>CreateFile</code>، <code>ReadFile</code>، <code>WriteFile</code> و ... را دارد و هم زبان C توابع <code>fopen</code>، <code>fread</code>، <code>fwrite</code> و ... را. سؤال اینجاست که بهتر است از کدام توابع استفاده کنیم؟</p>
+                <p>فراموش نکن که خود زبان برنامه‌نویسی (یعنی runtime زبان) برای انجام کارها نهایتاً از توابع سیستم عامل استفاده می‌کند. توابع سیستم عامل معمولاً دسترسی به کلیه‌ی امکانات و جزئیات سیستم عامل را فراهم می‌کنند اما توابع زبان ممکن است بعضی امکانات را پوشش ندهند. در عوض کتابخانه‌های زبان، در همه‌ی محیط‌ها و سیستم‌عامل‌های دیگر هم کار می‌کنند و رفتار کمابیش یکسانی دارند اما اگر از توابع سیستم عامل ویندوز استفاده شود، port کردن برنامه به لینوکس و Mac OS دشوار می‌شود.</p>
+                <p>...</p>
+            </section>
+
+            <section>
+                <h1>تمرین</h1>
+                <ul>
+                    <li><p>برنامه‌ای بنویسید که یک فایل را به آدرس جدیدی کپی کند. اگر فایل مقصد وجود دارد، از نوشتن روی فایل قبلی خودداری شود و پیغام خطای مناسب به کاربر نمایش داده شود. (<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa364232(v=vs.85).aspx">مستندات توابع مربوط به کار با فایل‌ها را اینجا ببینید</a>)</p></li>
+                    <li><p>برنامه‌ای بنویسید که یک عدد را از console بخواند، و مجذور آن را در یک MessageBox نمایش دهد.</p></li>
+                    <li><p>برنامه‌ای بنویسید که عبارت فارسی <code>"الا یا ایها الساقی ادر کاسا و ناولها"</code> را در یک فایل متنی با فرمت UTF-8 و با <a href="http://en.wikipedia.org/wiki/Byte_order_mark">امضای مناسب</a> ذخیره کند.</p></li>
+                    <li><p>برنامه‌ای بنویسید که محتوای یک فایل متنی را در یک MessageBox نمایش دهد. برنامه باید <a href="http://en.wikipedia.org/wiki/Byte_order_mark">به طور اتوماتیک فرمت فایل را که می‌تواند ANSI، UTF-16 یا UTF-8 باشد</a> تشخیص دهد. برای متن‌های ANSI می‌شود code page مورد نظر کاربر را پرسید و با آن code page نمایش داد.</p></li>
+                    <li><p>با کمک <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms738545(v=vs.85).aspx">مستندات Winsock</a>، برنامه‌ی شبکه (ارسال و دریافت اطلاعات، دریافت فایل از طریق HTTP، چت، وب‌سرور، ...) بنویسید.</p></li>
+                </ul>
+                
+            </section>
+
+        </section>
+
+
+        <section>
+
+            <h1>ب: پنجره‌ها</h1>
+
+            <section>
+                <h1>MessageBox</h1>
+                <p>یکی از پنجره‌های ساده که کارهای مختلفی می‌شود باهاش انجام داد MessageBox است که برای نمایشش از تابع <code>MessageBox</code> استفاده می‌شود. در بخش قبلی چندین بار از این تابع استفاده کردیم. این تابع چهار پارامتر دارد:</p>
+                <ul>
+                    <li><p>پنجره‌ی والد: اگر این MessageBox زیرمجوعه‌ی پنجره‌ی دیگری است، HANDLE آن پنجره‌ی اصلی اینجا داده می‌شود، در غیر این صورت <code>NULL</code>.</p></li>
+                    <li><p>متن پیام: یک رشته حاوی متنی که قرار است نمایش داده شود. می‌تواند چند خط باشد که خط‌ها به وسیله‌ی <code>\r</code> یا <code>\n</code> از هم جدا می‌شوند.</p></li>
+                    <li><p>عنوان: یک رشته حاوی عنوان پنجره که در title bar (نوار عنوان) نمایش داده می‌شود. اگر <code>NULL</code> وارد شود، عنوان پنجره <b>Error</b> نمایش داده می‌شود.</p></li>
+                    <li><p>نوع دیالوگ: مشخص می‌کند که چه دکمه‌ها و آیکان‌هایی نمایش داده شود. برای دیدن لیست کامل تنظیمات <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms645505(v=vs.85).aspx">مستندات MSDN</a> را ببینید.</p></li>
+                </ul>
+                <p>برای مثال برای نمایش یک MessageBox که آیکان علامت سؤال دارد و دکمه‌های Yes و No را نمایش می‌دهد:</p>
+<pre>
+MessageBox(NULL, L"Are you okay?", NULL, <b>MB_YESNO | MB_ICONQUESTION</b>);
+</pre>
+                <p>برای اینکه هر دو مقدار <code>MB_YESNO</code> و <code>MB_ICONQUESTION</code> برای نوع MessageBox استفاده شود، از عملیات OR بیتی (|) بین مقادیر آنها استفاده شده. در ویندوز برای تعریف چند flag همزمان همیشه از چنین تکنیکی استفاده می‌شود.</p>
+                <p>تابع <code>MessageBox</code> تا زمانی که کاربر یکی از کلیدهای دیالوگ را نزند منتظر می‌ماند و بعد از آن کد کلیدی که زده شده را برمی‌گرداند. برای فهمیدن اینکه کدام کلید زده شده می‌شود مقداری که این تابع return کرده را بررسی کرد. مثال:</p>
+<pre>
+int button = MessageBox(NULL, L"Are you okay?", NULL, MB_YESNO | MB_ICONQUESTION);
+
+if (button == IDYES) {
+    printf("You pressed YES.\n");
+} else if (button == IDNO) {
+    printf("You pressed NO.\n");
+}
+</pre>
+            </section>
+
+            <section>
+                <h1>مدیریت طول عمر یک برنامه‌ی GUI</h1>
+                <p>در یک برنامه‌ی غیرگرافیکی، برنامه محاسبات خودش را انجام می‌دهد و هر جا لازم بود از طریق کنسول (که به آن ترمینال هم می‌گویند) با کاربر ارتباط برقرار می‌کند (می‌خواند و می‌نویسد). تنها زمانی که برنامه منتظر کاربر می‌ماند، وقتی است که منتظر وارد کردن اطلاعات از کاربر است. در توابعی مثل <code>scanf</code> یا <code>cin::operator&lt;&lt;</code> یک حلقه (loop) وجود دارد که منتظر کاربر می‌ماند تا کلیدهای مورد نظرش را بزند و وقتی به کلید Enter یا Return برخورد کرد، از حلقه خارج می‌شود و محتوای بافر صفحه‌کلید (کلیدهایی که در این فاصله زده شده) را به برنامه تحویل می‌دهد. کاربر در هر لحظه اجازه‌ی وارد کردن بیش از یک داده را ندارد و امکان بازگشت به عقب و اصلاح ورودی قبلی را هم ندارد.</p>
+                <p>در یک برنامه‌ی GUI، برعکس، برنامه در داخل پنجره (یا پنجره‌های) خودش، اطلاعات مختلفی به کاربر نمایش می‌دهد و ابزارهایی که کاربر با استفاده از آنها با برنامه ارتباط برقرار کند (مثل کنترل‌های مختلف text box، scroll bar، دکمه‌ها و ...) را به کاربر نمایش می‌دهد. بیشتر زمان برنامه به انتظار برای کاربر سپری می‌شود. هر موقع که کاربر عملی انجام داد که برای برنامه قابل فهم است (مثلاً از صفحه‌کلید، ماوس و سایر ورودی‌ها استفاده کرد) برنامه باید عکس‌العمل لازم را به این عمل کاربر نشان بدهد و دوباره منتظر شود تا کاربر کار بیشتری انجام بدهد. اگر برنامه در زمان کوتاهی به عمل کاربر (که به آن یک event می‌گویند) عکس‌العمل یا پاسخ مناسب را نشان ندهد، باعث ناراحتی کاربر می‌شود (اصطلاحاً می‌گویند برنامه قفل کرده، چون پاسخی به رفتار کاربر نشان نمی‌دهد که کاربر مشاهده کند)، به همین دلیل، هر گونه عملیات طولانی باید در یک thread جداگانه اجرا شود و ترجیحاً در thread اصلی برنامه (که با کاربر در ارتباط است و به آن GUI thread می‌گویند) کاربر را در جریان پیشرفت این عملیات قرار بدهد. پس بر خلاف یک برنامه‌ی غیرگرافیکی، برنامه سیر خطی طی نمی‌کند، بلکه در بیشتر زمان خودش منتظر ورودی از کاربر می‌ماند و با توجه به عمل کاربر، عکس‌العمل مناسب را به همان ترتیبی که ورودی از کاربر رسیده، انجام می‌دهد. برای نوشتن چنین برنامه‌هایی، باید یک همکاری نزدیک بین سیستم عامل ویندوز و برنامه اتفاق بیفتد.</p>
+                <p>برای هر GUI thread، سیستم عامل ویندوز یک «صف پیام» (message queue) نگهداری می‌کند. هر event که اتفاق می‌افتد (ورودی کاربر از طریق ماوس و صفحه‌کلید، پیام‌هایی که سیستم می‌خواهد به برنامه بفرستند و ...) به انتهای صف اضافه می‌شوند. برنامه باید مرتباً از ویندوز بخواهد که پیام‌های جدید را از سر صف به او تحویل بدهد تا این پیام‌ها پردازش شوند و عکس‌العمل مناسب به آنها نشان داده شود. در زمان‌هایی که برنامه (GUI thread) مشغول پاسخ‌دادن به پیام‌ها نیست، باید منتظر پیام بعدی از طرف سیستم عامل بماند.</p>
+                <p>در سیستم عامل ویندوز، همان طور که از نامش پیداست، فقط «پنجره‌ها» هویت دارند. اگر برنامه‌ای پنجره نداشته‌باشد، امکان ارتباط با کاربر، نمایش اطلاعات و دریافت ورودی را ندارد. کشیدن (متن و تصویر) فقط روی یک پنجره‌ی مشخص ممکن است و هر پیام (message یا event) برای یک پنجره‌ی مشخص اتفاق می‌افتد. بنابراین، برای اینکه امکان ارتباط با کاربر را داشته‌باشد، یک برنامه باید یک (یا چند) پنجره بسازد. هر پنجره دارای یک تابع پنجره (window procedure) است. این تابع وظیفه‌ی پاسخگویی به پیام‌هایی که به پنجره می‌رسد را به عهده دارد. هر موقع یک event برای یک پنجره اتفاق بیفتد، سیستم عامل تابع window procedure آن پنجره را صدا می‌زند و پیام مناسب را به صورت یک پارامتر در اختیار این تابع قرار می‌دهد تا پردازش شود. تابع window procedure را باید برنامه‌نویس بنویسد و برای هر پنجره به ویندوز معرفی کند.</p>
+                <p>به این ترتیب طول عمر یک برنامه‌ی GUI به شکل زیر است:</p>
+                <ul>
+                    <li><p>یک یا چند پنجره جدید بساز و محتوای مناسب را داخل آنها قرار بده.</p></li>
+                    <li>
+                        <p>تا وقتی هنوز پنجره‌ی اصلی برنامه توسط کاربر بسته نشده:</p>
+                        <ul>
+                            <li><p>منتظر پیام بعدی بمان.</p></li>
+                            <li><p>پیام را به window procedure پنجره‌ی مورد نظر تحویل بده تا پاسخ مناسب به آن داده شود.</p></li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>ضمناً هر پنجره به یک تابع window procedure احتیاج دارد که موقع ساختن پنجره به سیستم عامل ویندوز معرفی می‌شود. این تابع باید ببیند پیام رسیده به پنجره چیست (آیا یک ورودی از صفحه‌کلید، ماوس یا ... است؟) و در صورت لزوم پاسخ مناسب را به این پیام بدهد.</p>
+                <p>&nbsp;</p>
+                <p>یک پروژه‌ی کنسول خالی بسازید، یک فایل کد به پروژه اضافه کنید (مثل فصل قبل) و کد زیر را در تنها فایل پروژه وارد کنید:</p>
+<pre>
+#include &lt;Windows.h&gt;
+#include &lt;stdio.h&gt;
+
+bool CreateMainWindow();
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+int main(int argc, char **argv)
+{
+    if (!CreateMainWindow())
+    {
+        printf("Unable to create main window.\n");
+        return -1;
+    }
+
+    // Message loop will be here
+
+    return 0;
+}
+
+bool CreateMainWindow()
+{
+    return false;
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    return 0;
+}
+</pre>
+                <p>کد بالا اسکلت برنامه‌ی گرافیکی ماست. این برنامه قرار است یک پنجره بسازد (در تابع <code>CreateMainWindow</code>)، برای این پنجره یک window procedure معرفی کند (تابع <code>WndProc</code>) و بعد یک حلقه‌ی پیام (messsage loop) در داخل تابع <code>main</code> داشته‌باشد تا پیام‌های که برای پنجره‌ی اصلی برنامه می‌رسد را پردازش کند. در بخش‌های بعدی این 3 قسمت که در اسکلت بالا خالی هستند را به برنامه اضافه می‌کنیم و کم کم برنامه را کامل می‌کنیم.</p>
+            </section>
+
+            <section>
+                <h1>نوشتن یک window procedure برای پاسخ‌دادن به eventها</h1>
+                <p>اگر به تعریف تابع <code>WndProc</code> در کد اسکلت بالا دقت کنید، می‌بینید که این تابع 4 پارامتر ورودی دارد. انواع داده‌ای <code>LRESULT</code>، <code>UINT</code>، <code>WPARAM</code> و <code>LPARAM</code> همگی اعداد صحیح (integer) هستند و نباید از آنها بترسید. هر بار که یک event اتفاق می‌افتد، سیستم این تابع را صدا می‌زند تا برنامه‌ی ما فرصت داشته‌باشد پاسخ مناسب به این اتفاق را بدهد. پارامترهای این تابع اینها هستند:</p>
+                <ul>
+                    <li><p><code>HWND hWnd</code>: مشخص می‌کند که این پیام برای کدام پنجره است (این event روی کدام پنجره اتفاق افتاده). همان طور که در فصل قبل گفتیم، <code>HWND</code> یعنی HANDLE برای یک پنجره.</p></li>
+                    <li>
+                        <p><code>UINT message</code>: یک عدد است که مشخص می‌کند چه اتفاقی رخ داده. برای هر نوع اتفاق یک کد جداگانه در نظر گرفته شده. ما معمولاً با این عددها مستقیماً کار نمی‌کنیم، بلکه از ماکروهایی که برای نامگذاری در headerهای ویندوز تعریف شده‌اند استفاده می‌کنیم. به عنوان مثال:</p>
+                        <ul>
+                            <li><p><code>WM_KEYDOWN</code> یعنی یک کلید فشار داده شد</p></li>
+                            <li><p><code>WM_KEYUP</code> یعنی یک کلید رها شد</p></li>
+                            <li><p><code>WM_LBUTTONDOWN</code> یعنی دکمه‌ی چپ ماوس فشار داده شد</p></li>
+                            <li><p><code>WM_RBUTTONUP</code> یعنی دکمه‌ی راست ماوس رها شد</p></li>
+                            <li><p><code>WM_MOUSEMOVE</code> یعنی ماوس روی پنجره تکان خورد</p></li>
+                            <li><p><code>WM_SIZE</code> یعنی اندازه‌ی پنجره عوض شد</p></li>
+                            <li><p><code>WM_MOVE</code> یعنی پنجره در صفحه جابجا شد</p></li>
+                            <li><p><code>WM_CLOSE</code> یعنی پنجره بسته شد (مثلاً وقتی کاربر روی دکمه‌ی قرمز ضربدر در گوشه‌ی بالای پنجره می‌زند، یا کلیدهای <code>ALT+F4</code> را می‌زند)</p></li>
+                        </ul>
+                        <p>همان طور که می‌بینید تمام این ماکروها با <code>WM_</code> شروع می‌شوند که مخفف Window Message است.</p>
+                    </li>
+                    <li><p><code>LPARAM lParam</code> و <code>WPARAM wParam</code>: اطلاعات بیشتر در مورد event به ما می‌دهند. مثلاً موقعی که یک کلید فشار داده شده، مشخص می‌کنند که کدام کلید فشار داده شده. یا مشخص می‌کنند که محل ماوس در زمان کلیک کجا بوده و ... اینکه هر کدام از این پارامترها چه معنی می‌دهند بسته به نوع پیام متفاوت است. در مستندات MSDN توضیحات کامل در مورد این پارامترها آمده. (نگاه کنید به: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff468877(v=vs.85).aspx">پیام‌های ماوس</a>، <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff468861(v=vs.85).aspx">پیام‌های صفحه‌کلید</a>، <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff468922(v=vs.85).aspx">پیام‌های پنجره</a>)</p></li>
+                </ul>
+                <p>تابع <code>WndProc</code> باید یک مقدار برگرداند (return کند) که این مقدار بسته به نوع پیام متفاوت است. برای اینکه بدانید در پاسخ به هر پیام، باید چه مقداری برگردانده شود باید به مستندات MSDN برای آن پیام مراجعه کنید. معمولاً موقعی که یک پیام با موفقیت پردازش شد باید مقدار <code>0</code> برگردانده شود.</p>
+                <p>با دانستن این توضیحات، حالا می‌توانیم بدنه‌ی تابع <code>WndProc</code> را به صورت زیر بنویسیم:</p>
+<pre>
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    <b>switch (message)
+    {
+    case WM_LBUTTONDOWN:
+        printf("Left button pressed, x=%d, y=%d\n", LOWORD(lParam), HIWORD(lParam));
+        break;
+    case WM_LBUTTONUP:
+        printf("Left button released, x=%d, y=%d\n", LOWORD(lParam), HIWORD(lParam));
+        break;
+    case WM_RBUTTONDOWN:
+        printf("Right button pressed, x=%d, y=%d\n", LOWORD(lParam), HIWORD(lParam));
+        break;
+    case WM_RBUTTONUP:
+        printf("Right button released, x=%d, y=%d\n", LOWORD(lParam), HIWORD(lParam));
+        break;
+
+    case WM_KEYDOWN:
+        printf("Key pressed, key=%d\n", wParam);
+        break;
+    case WM_KEYUP:
+        printf("Key released, key=%d\n", wParam);
+        break;
+
+    case WM_SIZE:
+        printf("Window resized, new size %dx%d\n", LOWORD(lParam), HIWORD(lParam));
+        break;
+    case WM_MOVE:
+        printf("Window moved, x=%d, y=%d\n", LOWORD(lParam), HIWORD(lParam));
+        break;
+
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }</b>
+    return 0;
+}
+</pre>
+                <p>کاری که کد بالا انجام می‌دهد این است که با توجه به اینکه پیام چیست، یک پیغام در کنسول چاپ می‌کند. در صورتی که پیامی غیر از آنهایی که در برنامه پردازش می‌شد به تابع رسید، به جای اینکه آن را دور بیندازیم، تابع <code>DefWindowProc</code> را صدا می‌زنیم تا پاسخ پیش‌فرض ویندوز به آن پیام داده شود (همیشه باید همین طور عمل شود). همان طور که می‌بینید برای پیدا کردن محل ماوس، سایز پنجره و کد کلیدی که فشار داده شده، از پارامترهای <code>lParam</code> و <code>wParam</code> استفاده کردیم. برای جزئیات بیشتر می‌توانید به مستندات این پیام‌ها نگاه کنید: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms645607(v=vs.85).aspx">WM_LBUTTONDOWN</a>، <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms646280(v=vs.85).aspx">WM_KEYDOWN</a>، <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms632646(v=vs.85).aspx">WM_SIZE</a>، <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms632631(v=vs.85).aspx">WM_MOVE</a></p>
+                <p>متأسفانه هنوز نمی‌توانید این برنامه را اجرا کنید و با آن بازی کنید، چون هنوز کد مربوط به message loop و ساختن پنجره نوشته نشده.</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>حلقه‌ی پیام (message loop)</h1>
+                <p>حلقه‌ی پیام را به شکل زیر در تابع <code>main</code> پیاده‌سازی می‌کنیم:</p>
+<pre>
+int main(int argc, char **argv)
+{
+    if (!CreateMainWindow())
+    {
+        printf("Unable to create main window.\n");
+        return -1;
+    }
+
+    <b>MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0))
+    {
+        DispatchMessage(&msg);
+    }</b>
+
+    return 0;
+}
+</pre>
+                <p><code>MSG</code> یک struct است که اطلاعات مربوط به یک پیام را در خودش نگه می‌دارد. این اطلاعات شبیه پارامترهای تابع <code>WndProc</code> است (HANDLE پنجره، نوع پیام، امل: پنجره‌ی صاحب (گیرنده‌ی) پیام، نوع اتفاقی که رخ داده (حرکت ماوس، کلیک، فشردن کلید، رها شدن کلید، ...) است. پیام ممکن است اطلاعات بیشتری داشته باشد (مثلاً محل ماوس، یا کلیدی که فشار داده شده و ...).</p>
+                
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>ساختن یک پنجره</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>بازی کردن با پنجره</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>نقاشی ساده با GDI</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>استفاده از resourceها</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>اضافه کردن منو</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>درست کردن یک برنامه شبیه notepad</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>ساختن پنجره‌های فرزند</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>Common controls</h1>
+                <p>...</p>
+            </section>
+
+            <section style="border: 2px dashed #ff006e">
+                <p style="color: #ff006e">این قسمت ناقص است</p>
+                <h1>استفاده از دیالوگ</h1>
+                <p>...</p>
+            </section>
+
+            <section>
+                <h1>تمرین</h1>
+                <ul>
+                    <li><p>برنامه‌ی نقاشی را اصلاح کنید که با چند پنجره کار کند</p></li>
+                    <li><p>برنامه‌ی نقاشی، ذخیره کند</p></li>
+                    <li><p>نقاشی شبکه یکی آبی یکی قرمز.</p></li>
+                    <li><p></p></li>
+                    <li><p></p></li>
+                </ul>
+
+            </section>
+
+        </section>
+
+
+    </article>
+    
+</body>
+</html>
